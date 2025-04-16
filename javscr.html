@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mkau Inno Tech</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js" defer></script>
+    <style>
+        :root {
+            --primary-color: #2E8B57;
+            --secondary-color: #3CB371;
+            --text-color: #333;
+            --bg-gradient: linear-gradient(to bottom, #FFFFE0, #90EE90, #FFE4E1, white);
+            --dark-bg: #1a1a1a;
+            --dark-text: #e0e0e0;
+            --dark-card: #2c2c2c;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --text-color: var(--dark-text);
+            --bg-gradient: linear-gradient(to bottom, #2c2c2c, #1a3c34, #3a1c3d, #1a1a1a);
+            --primary-color: #50C878;
+            --secondary-color: #66CDAA;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: var(--transition);
+        }
+
+      
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader::after {
+            content: '';
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--primary-color);
+            border-top: 5px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+    
+        .theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 100;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background: var(--secondary-color);
+            transform: rotate(360deg);
+        }
+
+    
+        header {
+            background-color: #333;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items :center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            max-width: 250px;
+        }
+
+        .logo img {
+            width: 300%;
+            height: auto;
+            transition: transform 0.5s ease;
+        }
+
+        .logo-text {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: magenta;
+            animation: moveTextRightToLeft 15s linear infinite;
+        }
+
+        @keyframes moveTextRightToLeft {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-100%); }
+        }
+        .nav-container {
+            background: var(--primary-color);
+            padding: 0.45rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 99;
+            box-shadow: var(--shadow);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        nav li {
+            position: relative;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            display: block;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        nav a:hover, nav a:focus {
+            background: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+
+        nav .dropdown-content {
+            display: none;
+            position: absolute;
+            background: white;
+            min-width: 220px;
+            box-shadow: var(--shadow);
+            z-index: 1;
+            border-radius: 8px;
+            top: 100%;
+            left: 0;
+        }
+
+        nav .dropdown-content a {
+            color: var(--text-color);
+            background: transparent;
+            padding: 0.75rem 1rem;
+            transition: var(--transition);
+        }
+
+        nav .dropdown-content a:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        nav li:hover .dropdown-content, nav li:focus-within .dropdown-content {
+            display: block;
+        }
+
+        /* Sections */
+        .section {
+            padding: 4rem 1rem;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            background-attachment: fixed;
+            background-size: cover;
+            transition: opacity 0.5s ease;
+        }
+
+        .section h2 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .section h2:hover {
+            color: var(--primary-color);
+        }
+
+        .section h2::after {
+            content: '';
+            width: 60px;
+            height: 4px;
+            background: var(--primary-color);
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .moving-text {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--primary-color);
+            margin: 1.5rem 0;
+            animation: marquee 20s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .section button {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .section button:hover, .section button:focus {
+            transform: scale(1.1);
+            box-shadow: var(--shadow);
+        }
+
+        /* Slider */
+        .full-slider {
+            position: relative;
+            width: 100%;
+            height: clamp(300px, 50vw, 600px);
+            margin: 2rem 0;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .slider-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            transform: scale(1.1);
+        }
+
+        .slider-image.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .slider-content {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            background: rgba(0, 0, 0, 0.75);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            max-width: 600px;
+            animation: slideUp 0.5s ease-in;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slider-controls {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+
+        .slider-controls button {
+            background: rgba(0, 0, 0, 0.6);
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            padding: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .slider-controls button:hover, .slider-controls button:focus {
+            background: var(--primary-color);
+        }
+
+        .slider-dots {
+            position: absolute;
+            bottom: 1rem;
+            width: 100%;
+            text-align: center;
+        }
+
+        .dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            margin: 0 6px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dot.active {
+            background: var(--primary-color);
+            transform: scale(1.3);
+        }
+
+        /* Team Members */
+        .team-members {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .team-member {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        [data-theme="dark"] .team-member {
+            background: var(--dark-card);
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px) rotate(2deg);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .team-member img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            transition: var(--transition);
+        }
+
+        .team-member:hover img {
+            transform: scale(1.05);
+        }
+
+        .team-member h3 {
+            color: var(--primary-color);
+            cursor: pointer;
+            margin: 0.5rem 0;
+            font-size: 1.2rem;
+        }
+
+        .team-member h3:hover, .team-member h3:focus {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+
+        /* Progress Bars */
+        .progress-container {
+            margin: 2rem 0;
+            text-align: left;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .progress-bar {
+            margin: 1rem 0;
+        }
+
+        .progress-bar label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .progress-bar div {
+            height: 10px;
+            background: #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar div span {
+            display: block;
+            height: 100%;
+            background: var(--primary-color);
+            transition: width 1s ease-in-out;
+        }
+
+        /* Forms */
+        .form-container {
+            width: min(90%, 450px);
+            margin: 2rem auto;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        [data-theme="dark"] .form-container {
+            background: var(--dark-card);
+        }
+
+        .form-container label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .form-container input,
+        .form-container select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-container input:focus,
+        .form-container select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 8px rgba(46, 139, 87, 0.3);
+            outline: none;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            animation: modalPop 0.3s ease;
+        }
+
+        [data-theme="dark"] .modal-content {
+            background: var(--dark-card);
+        }
+
+        .modal-content h3 {
+            margin-bottom: 1rem;
+        }
+
+        .modal-content button {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .modal-content button:hover {
+            background: var(--secondary-color);
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* Detail Text */
+        .detail-text {
+            display: none;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            max-width: 900px;
+            margin: 2rem auto;
+            text-align: left;
+        }
+
+        [data-theme="dark"] .detail-text {
+            background: var(--dark-card);
+        }
+
+        /* Footer */
+        footer {
+            background: #333;
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.3rem;
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul li a {
+            color: #ddd;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-section ul li a:hover, .footer-section ul li a:focus {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .social-icons a {
+            color: white;
+            margin: 0 0.8rem;
+            font-size: 1.8rem;
+            transition: var(--transition);
+        }
+
+        .social-icons a:hover, .social-icons a:focus {
+            color: var(--primary-color);
+            transform: scale(1.2);
+        }
+
+        /* Back to Top */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary-color);
+            color: white;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            opacity: 0;
+            transition: var(--transition);
+            cursor: pointer;
+            z-index: 100;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover, .back-to-top:focus {
+            background: var(--secondary-color);
+            transform: translateY(-8px);
+        }
+
+        /* Scroll Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Media Queries */
+        @media (max-width: 1024px) {
+            .full-slider {
+                height: 400px;
+            }
+
+            .slider-content {
+                max-width: 500px;
+                left: 1.5rem;
+                bottom: 1.5rem;
+            }
+
+            .section {
+                padding: 3rem 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav li {
+                width: 100%;
+                text-align: center;
+            }
+
+            nav .dropdown-content {
+                position: static;
+                width: 100%;
+                box-shadow: none;
+            }
+
+            .full-slider {
+                height: 300px;
+            }
+
+            .slider-content {
+                left: 1rem;
+                bottom: 1rem;
+                max-width: 85%;
+                padding: 1rem;
+            }
+
+            .logo-container {
+                flex-direction: column;
+            }
+
+            .logo {
+                max-width: 200px;
+            }
+
+            .logo-text {
+                font-size: 0.9rem;
+            }
+
+            .section h2 {
+                font-size: 1.8rem;
+            }
+
+            .form-container {
+                width: 95%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .full-slider {
+                height: 250px;
+            }
+
+            .slider-content h3 {
+                font-size: 1.1rem;
+            }
+
+            .slider-content p {
+                font-size: 0.85rem;
+            }
+
+            .team-member {
+                width: 100%;
+            }
+
+            .back-to-top {
+                width: 45px;
+                height: 45px;
+                font-size: 1.4rem;
+            }
+
+            .theme-toggle {
+                top: 0.5rem;
+                right: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loader"></div>
+    <button class="theme-toggle" aria-label="Toggle dark mode"><i class="fas fa-moon"></i></button>
+
+    <header>
+        <div class="header-content">
+            <div class="logo-container">
+                <div class="logo">
+                    <img src="https://www.mkau.edu.et/wp-content/uploads/2024/07/website-logo-2024.jpg" alt="MAU INNO TECH Logo" loading="lazy">
+                </div>
+                <div class="logo-text">WELCOME TO MEKEDLA AMBA UNIVERSITY INNOVATION TECHNOLOGY WEBSITE</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="nav-container">
+        <nav>
+            <ul role="menubar">
+                <li role="menuitem">
+                    <a href="#" aria-haspopup="true">Home</a>
+                    <div class="dropdown-content" role="menu">
+                        <a href="#" onclick="showAction('settings')" role="menuitem">Settings</a>
+                        <a href="#" onclick="showAction('feedback')" role="menuitem">Feedback</a>
+                        <a href="#" onclick="showAction('profile')" role="menuitem">Profile</a>
+                    </div>
+                </li>
+                <li role="menuitem">
+                    <a href="#about" aria-haspopup="true">About Us</a>
+                    <div class="dropdown-content" role="menu">
+                        <a href="https://www.mkau.edu.et/" target="_blank" role="menuitem">About MAU</a>
+                        <a href="#developers" role="menuitem">Developers Info</a>
+                        <a href="https://www.mkau.edu.et/wp-content/uploads/2025/03/l3.jpg" target="_blank" role="menuitem">Project Manager</a>
+                    </div>
+                </li>
+                <li role="menuitem">
+                    <a href="#services" aria-haspopup="true">Services</a>
+                    <div class="dropdown-content" role="menu">
+                        <a href="#web-dev" onclick="showAction('webDev')" role="menuitem">Web Development</a>
+                        <a href="#software-dev" onclick="showAction('softwareDev')" role="menuitem">Software Development</a>
+                        <a href="#creativity" onclick="showAction('creativity')" role="menuitem">Other Creativity</a>
+                    </div>
+                </li>
+                <li role="menuitem">
+                    <a href="#learning-website" aria-haspopup="true">Learning Website</a>
+                    <div class="dropdown-content" role="menu">
+                        <a href="#video-tutorials" role="menuitem">Video</a>
+                        <a href="https://www.w3schools.com/" target="_blank" role="menuitem">W3Schools</a>
+                        <a href="https://www.udemy.com/" target="_blank" role="menuitem">Udemy</a>
+                        <a href="https://www.tpointtech.com/" target="_blank" role="menuitem">JavaTPoint</a>
+                        <a href="https://www.udacity.com/" target="_blank" role="menuitem">Udacity</a>
+                        <a href="https://www.freecodecamp.org/" target="_blank" role="menuitem">FreeCodeCamp</a>
+                        <a href="https://graceacademy.net/" target="_blank" role="menuitem">Grace Academy</a>
+                        <a href="https://www.mygreatlearning.com/" target="_blank" role="menuitem">Great Learning</a>
+                    </div>
+                </li>
+                <li role="menuitem">
+                    <a href="#amharictutorials" aria-haspopup="true">Amharic Tutorials</a>
+                    <div class="dropdown-content" role="menu">
+                        <a href="https://m.youtube.com/watch?v=2yvjr-1Lmto&t=0s" target="_blank" role="menuitem">DG Tech</a>
+                        <a href="https://www.youtube.com/watch?v=F-F3oimL6uI" target="_blank" role="menuitem">Ethio Programming</a>
+                        <a href="https://www.youtube.com/c/ETTechAmharic/channels" target="_blank" role="menuitem">ETtech</a>
+                        <a href="https://www.youtube.com/watch?v=kDE31AmaIAM" target="_blank" role="menuitem">Emmersive Learning</a>
+                        <a href="https://www.youtube.com/watch?v=kXdqjM0o5kM/" target="_blank" role="menuitem">TG Tech</a>
+                    </div>
+                </li>
+                <li role="menuitem"><a href="#register">Register</a></li>
+                <li role="menuitem"><a href="#login">Login</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <section class="section fade-in" id="about">
+        <h2 onclick="scrollToSection('about')">About Our Website</h2>
+        <div class="full-slider" aria-label="About section slider">
+            <div class="slider-image active" style="background-image: url('https://www.mkau.edu.et/wp-content/uploads/2025/03/l3.jpg')" aria-hidden="false">
+                <div class="slider-content">
+                    <h3>Innovation Hub</h3>
+                    <p>Discover our state-of-the-art facilities designed to foster creativity and technological advancement.</p>
+                </div>
+            </div>
+            <div class="slider-image" style="background-image: url('https://images.pexels.com/photos/3184297/pexels-photo-3184297.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')" aria-hidden="true">
+                <div class="slider-content">
+                    <h3>Collaborative Environment</h3>
+                    <p>Work with like-minded individuals in our modern collaborative spaces.</p>
+                </div>
+            </div>
+            <div class="slider-image" style="background-image: url('https://images.pexels.com/photos/1181359/pexels-photo-1181359.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')" aria-hidden="true">
+                <div class="slider-content">
+                    <h3>Cutting-Edge Technology</h3>
+                    <p>Access the latest tools and resources for your projects.</p>
+                </div>
+            </div>
+            <div class="slider-controls">
+                <button class="prev" aria-label="Previous slide" onclick="prevImageSlider('about')"><i class="fas fa-chevron-left"></i></button>
+                <button class="next" aria-label="Next slide" onclick="nextImageSlider('about')"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="slider-dots"></div>
+        </div>
+        <div class="moving-text">Welcome to MAU INNO TECH - Your gateway to innovation and technology!</div>
+        <button onclick="showDetails('about-details')" aria-expanded="false" aria-controls="about-details">See Details</button>
+        <div id="about-details" class="detail-text">
+            <p>MAU INNO TECH is a platform dedicated to fostering innovation and technological advancement. Our website serves as a hub for students, developers, and tech enthusiasts to learn, collaborate, and create. We provide resources, tutorials, and tools to help you grow your technical skills and bring your ideas to life.</p>
+            <p>Our mission is to bridge the gap between academic learning and practical application by providing hands-on experience with real-world projects. Whether you're a beginner or an experienced developer, you'll find valuable resources to enhance your skills.</p>
+            <p>The platform offers:</p>
+            <ul>
+                <li>Comprehensive learning resources</li>
+                <li>Project-based learning opportunities</li>
+                <li>Community collaboration spaces</li>
+                <li>Mentorship programs</li>
+                <li>Innovation challenges</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="section fade-in" id="developers">
+        <h2 onclick="scrollToSection('developers')">Developers Section</h2>
+        <div class="full-slider" aria-label="Developers section slider">
+            <div class="slider-image active" style="background-image: url('https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')" aria-hidden="false">
+                <div class="slider-content">
+                    <h3>Web Development</h3>
+                    <p>Learn modern web technologies and frameworks.</p>
+                </div>
+            </div>
+            <div class="slider-image" style="background-image: url('https://images.pexels.com/photos/270360/pexels-photo-270360.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')" aria-hidden="true">
+                <div class="slider-content">
+                    <h3>Software Engineering</h3>
+                    <p>Master software development principles and practices.</p>
+                </div>
+            </div>
+            <div class="slider-image" style="background-image: url('https://images.pexels.com/photos/574071/pexels-photo-574071.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')" aria-hidden="true">
+                <div class="slider-content">
+                    <h3>Mobile Development</h3>
+                    <p>Build cross-platform mobile applications.</p>
+                </div>
+            </div>
+            <div class="slider-controls">
+                <button class="prev" aria-label="Previous slide" onclick="prevImageSlider('developers')"><i class="fas fa-chevron-left"></i></button>
+                <button class="next" aria-label="Next slide" onclick="nextImageSlider('developers')"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="slider-dots"></div>
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar">
+                <label>Web Development</label>
+                <div><span style="width: 90%"></span></div>
+            </div>
+            <div class="progress-bar">
+                <label>Software Engineering</label>
+                <div><span style="width: 85%"></span></div>
+            </div>
+            <div class="progress-bar">
+                <label>Mobile Development</label>
+                <div><span style="width: 80%"></span></div>
+            </div>
+        </div>
+        <button onclick="showDetails('developers-details')" aria-expanded="false" aria-controls="developers-details">See Details</button>
+        <div id="developers-details" class="detail-text">
+            <p>Our developers section is dedicated to providing resources and tools for software developers of all levels. We offer:</p>
+            <ul>
+                <li>Comprehensive coding tutorials covering various programming languages and frameworks</li>
+                <li>Project ideas and templates for practical learning</li>
+                <li>Code snippets and examples for quick reference</li>
+                <li>Development tools and frameworks documentation</li>
+                <li>Community support and collaboration opportunities</li>
+                <li>Regular coding challenges and hackathons</li>
+            </ul>
+            <p>Whether you're working on web development, mobile apps, or software engineering projects, you'll find valuable resources to accelerate your development process. Our platform supports learning paths for:</p>
+            <ul>
+                <li>Front-end development (HTML, CSS, JavaScript, React, Angular)</li>
+                <li>Back-end development (Node.js, Python, Java, PHP)</li>
+                <li>Mobile development (React Native, Flutter)</li>
+                <li>Database management (SQL, MongoDB)</li>
+                <li>DevOps and deployment strategies</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="section fade-in" id="team">
+        <h2 onclick="scrollToSection('team')">Our Team Members</h2>
+        <div class="full-slider" aria-label="Team section slider">
+            <div class="slider-image active" style="background-image: url('https://images.pexels.com/photos/3184297/pexels-photo-3184297.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')" aria-hidden="false">
+                <div class="slider-content">
+                    <h3>Our Leadership</h3>
+                    <p>Meet the team driving our innovation initiatives.</p>
+                </div>
+            </div>
+            <div class="slider-image" style="background-image: url('https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')" aria-hidden="true">
+                <div class="slider-content">
+                    <h3>Development Team</h3>
+                    <p>The experts behind our technical solutions.</p>
+                </div>
+            </div>
+            <div class="slider-image" style="background-image: url('https://images.pexels.com/photos/3184325/pexels-photo-3184325.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')" aria-hidden="true">
+                <div class="slider-content">
+                    <h3>Support Staff</h3>
+                    <p>Dedicated professionals ensuring smooth operations.</p>
+                </div>
+            </div>
+            <div class="slider-controls">
+                <button class="prev" aria-label="Previous slide" onclick="prevImageSlider('team')"><i class="fas fa-chevron-left"></i></button>
+                <button class="next" aria-label="Next slide" onclick="nextImageSlider('team')"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="slider-dots"></div>
+        </div>
+        <div class="team-members">
+            <div class="team-member" data-tilt data-tilt-max="10">
+                <img src="https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Alemayehu Tekalign" loading="lazy">
+                <h3 onclick="showTeamMember('Alemayehu')" tabindex="0" role="button" aria-controls="Alemayehu-info">ALEMAYEHU TEKALIGN</h3>
+                <p>Website Developer</p>
+                <p>Department: Computer Science</p>
+                <p>Phone: 0902698523</p>
+            </div>
+            <div class="team-member" data-tilt data-tilt-max="10">
+                <img src="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Alemayehu" loading="lazy">
+                <h3 onclick="showTeamMember('ALEMAYEHU')" tabindex="0" role="button" aria-controls="ALEMAYEHU-info">Alemayehu</h3>
+                <p>Back-end Developer</p>
+                <p>Department: Computer Science</p>
+                <p>Phone: 0979622099</p>
+            </div>
+            <div class="team-member" data-tilt data-tilt-max="10">
+                <img src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Berhanu" loading="lazy">
+                <h3 onclick="showTeamMember('Berhanu')" tabindex="0" role="button" aria-controls="Berhanu-info">Berhanu</h3>
+                <p>Project Manager</p>
+                <p>Department: Information Technology</p>
+                <p>Phone: 0911223344</p>
+            </div>
+        </div>
+        <button onclick="showDetails('team-details')" aria-expanded="false" aria-controls="team-details">See Details</button>
+        <div id="team-details" class="detail-text">
+            <p>Our team consists of passionate professionals dedicated to creating the best learning and development experience for our users. Each member brings unique skills and expertise to the table, ensuring we deliver high-quality content and services.</p>
+            <p>We believe in collaboration, continuous learning, and innovation. Our team works together to create resources that are practical, up-to-date, and relevant to today's technology landscape.</p>
+            <div id="Alemayehu-info" class="team-member-info">
+                <h3>Alemayehu - Front-end Developer</h3>
+                <div class="profile-info">
+                    <img src="https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Alemayehu Tekalign" loading="lazy">
+                    <div class="profile-details">
+                        <p><strong>Department:</strong> Computer Science</p>
+                        <p><strong>Contact:</strong> 0902698523</p>
+                        <p><strong>Email:</strong> alemayehutekalign13@gmail.com</p>
+                        <p><strong>Expertise:</strong> Front-end development</p>
+                        <p><strong>Bio:</strong> With over 1 year of experience in front-end development, Alemayehu leads our technical team in creating innovative solutions. He specializes in JavaScript frameworks and cloud architecture.</p>
+                    </div>
+                </div>
+            </div>
+            <div id="ALEMAYEHU-info" class="team-member-info">
+                <h3>Alemayehu - Back-end Developer</h3>
+                <div class="profile-info">
+                    <img src="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Alemayehu" loading="lazy">
+                    <div class="profile-details">
+                        <p><strong>Department:</strong> Computer Science</p>
+                        <p><strong>Contact:</strong> 0979622099</p>
+                        <p><strong>Email:</strong> alemayehutekalign13@gmail.com</p>
+                        <p><strong>Expertise:</strong> Back-end development, API design</p>
+                        <p><strong>Bio:</strong> Alemayehu specializes in building robust server-side applications and APIs to enhance the learning experience.</p>
+                    </div>
+                </div>
+            </div>
+            <div id="Berhanu-info" class="team-member-info">
+                <h3>Berhanu - Project Manager</h3>
+                <div class="profile-info">
+                    <img src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Berhanu" loading="lazy">
+                    <div class="profile-details">
+                        <p><strong>Department:</strong> Information Technology</p>
+                        <p><strong>Contact:</strong> 0911223344</p>
+                        <p><strong>Email:</strong> mike.johnson@mkauinno.tech</p>
+                        <p><strong>Expertise:</strong> Agile Methodologies, Team Leadership</p>
+                        <p><strong>Bio:</strong> Berhanu ensures all projects_aes are delivered on time and meet quality standards. He has a background in both technical development and business management.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section fade-in" id="register">
+        <h2>Register</h2>
+        <div class="form-container">
+            <form id="registerForm" onsubmit="return validateRegister(event)">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required aria-required="true">
+                <label for="fullname">Full Name:</label>
+                <input type="text" id="fullname" name="fullname" required aria-required="true">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required aria-required="true">
+                <label for="department">Department:</label>
+                <select id="department" name="department" required aria-required="true">
+                    <option value="" disabled selected>Select Department</option>
+                    <option value="cs">CS</option>
+                    <option value="se">SE</option>
+                    <option value="it">IT</option>
+                    <option value="other">Other</option>
+                </select>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="section fade-in" id="login">
+        <h2>Login</h2>
+        <div class="form-container">
+            <form id="loginForm" onsubmit="return validateLogin(event)">
+                <label for="login-email">Email:</label>
+                <input type="email" id="login-email" name="email" required aria-required="true">
+                <label for="login-password">Password:</label>
+                <input type="password" id="login-password" name="password" required aria-required="true">
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#services">Our Services</a></li>
+                    <li><a href="#team">Team Members</a></li>
+                    <li><a href="#learning-website">Learning Websites</a></li>
+                    <li><a href="#register">Register</a></li>
+                    <li><a href="#login">Login</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="https://www.w3schools.com/" target="_blank">W3Schools</a></li>
+                    <li><a href="https://www.udemy.com/" target="_blank">Udemy</a></li>
+                    <li><a href="https://www.freecodecamp.org/" target="_blank">FreeCodeCamp</a></li>
+                    <li><a href="https://www.udacity.com/" target="_blank">Udacity</a></li>
+                    <li><a href="https://graceacademy.net/" target="_blank">Grace Academy</a></li>
+                    <li><a href="https://www.mygreatlearning.com/" target="_blank">Great Learning</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <ul>
+                    <li>Email: info@mkauinno.tech</li>
+                    <li>Phone: +251 902698523</li>
+                    <li>Address: Mekedela Amba University</li>
+                    <li>Computer Science Department</li>
+                </ul>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/" class="fab fa-facebook-f" target="_blank" aria-label="Facebook"></a>
+                    <a href="https://twitter.com/" class="fab fa-twitter" target="_blank" aria-label="Twitter"></a>
+                    <a href="https://www.instagram.com/" class="fab fa-instagram" target="_blank" aria-label="Instagram"></a>
+                    <a href="https://www.linkedin.com/" class="fab fa-linkedin-in" target="_blank" aria-label="LinkedIn"></a>
+                </div>
+            </div>
+        </div>
+        <p>© 2017 E.C MAU INNO TECH CREATED BY ALEMAYEHU TEKALIGN. All rights reserved.</p>
+    </footer>
+
+    <div class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-chevron-up"></i>
+    </div>
+
+    <div class="modal" id="formModal">
+        <div class="modal-content">
+            <h3 id="modalTitle"></h3>
+            <p id="modalMessage"></p>
+            <button onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Loader
+        window.addEventListener('load', () => {
+            document.querySelector('.loader').classList.add('hidden');
+        });
+
+        // Dark Mode Toggle
+        const themeToggle = document.querySelector('.theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            document.documentElement.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
+            themeToggle.innerHTML = `<i class="fas fa-${currentTheme === 'dark' ? 'moon' : 'sun'}"></i>`;
+        });
+
+        // Slider functionality
+        const sliders = {
+            'about': { current: 0, total: 3 },
+            'developers': { current: 0, total: 3 },
+            'team': { current: 0, total: 3 }
+        };
+
+        function showSlide(sliderId, index) {
+            const slider = document.querySelector(`#${sliderId} .full-slider`);
+            const slides = slider.querySelectorAll('.slider-image');
+            const dots = slider.querySelectorAll('.slider-dots .dot');
+            const data = sliders[sliderId];
+
+            data.current = (index + data.total) % data.total;
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === data.current);
+                slide.setAttribute('aria-hidden', i !== data.current);
+            });
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === data.current);
+            });
+        }
+
+        function nextImageSlider(sliderId) {
+            showSlide(sliderId, sliders[sliderId].current + 1);
+        }
+
+        function prevImageSlider(sliderId) {
+            showSlide(sliderId, sliders[sliderId].current - 1);
+        }
+
+        // Initialize sliders and dots
+        document.addEventListener('DOMContentLoaded', () => {
+            for (const sliderId in sliders) {
+                const slider = document.querySelector(`#${sliderId} .full-slider`);
+                const dotsContainer = slider.querySelector('.slider-dots');
+                for (let i = 0; i < sliders[sliderId].total; i++) {
+                    const dot = document.createElement('span');
+                    dot.classList.add('dot');
+                    if (i === 0) dot.classList.add('active');
+                    dot.addEventListener('click', () => showSlide(sliderId, i));
+                    dotsContainer.appendChild(dot);
+                }
+                showSlide(sliderId, 0);
+
+                // Swipe support
+                let touchStartX = 0;
+                slider.addEventListener('touchstart', (e) => {
+                    touchStartX = e.touches[0].clientX;
+                });
+                slider.addEventListener('touchend', (e) => {
+                    const touchEndX = e.changedTouches[0].clientX;
+                    if (touchStartX - touchEndX > 50) nextImageSlider(sliderId);
+                    if (touchEndX - touchStartX > 50) prevImageSlider(sliderId);
+                });
+            }
+
+            // Initialize Vanilla Tilt
+            VanillaTilt.init(document.querySelectorAll('.team-member'), {
+                max: 10,
+                speed: 400,
+                glare: true,
+                'max-glare': 0.3
+            });
+        });
+
+        // Auto slide change
+        setInterval(() => {
+            for (const sliderId in sliders) {
+                nextImageSlider(sliderId);
+            }
+        }, 5000);
+
+        // Show details
+        function showDetails(detailId) {
+            const detailText = document.getElementById(detailId);
+            const button = document.querySelector(`button[aria-controls="${detailId}"]`);
+            const isHidden = detailText.style.display === 'none' || detailText.style.display === '';
+            detailText.style.display = isHidden ? 'block' : 'none';
+            button.setAttribute('aria-expanded', isHidden);
+            if (isHidden) detailText.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Show action (placeholder for future functionality)
+        function showAction(actionId) {
+            console.log(`Action: ${actionId}`);
+        }
+
+        // Modal handling
+        function showModal(title, message) {
+            const modal = document.getElementById('formModal');
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalMessage').textContent = message;
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('formModal').style.display = 'none';
+        }
+
+        // Form validation
+        function validateRegister(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const fullname = document.getElementById('fullname').value;
+            const password = document.getElementById('password').value;
+            const department = document.getElementById('department').value;
+
+            if (!email || !fullname || !password || !department) {
+                showModal('Error', 'Please fill in all fields');
+                return false;
+            }
+
+            if (password.length < 6) {
+                showModal('Error', 'Password must be at least 6 characters');
+                return false;
+            }
+
+            if (!/\S+@\S+\.\S+/.test(email)) {
+                showModal('Error', 'Please enter a valid email');
+                return false;
+            }
+
+            showModal('Success', 'Registration successful!');
+            return true;
+        }
+
+        function validateLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            if (!email || !password) {
+                showModal('Error', 'Please fill in all fields');
+                return false;
+            }
+
+            if (!/\S+@\S+\.\S+/.test(email)) {
+                showModal('Error', 'Please enter a valid email');
+                return false;
+            }
+
+            showModal('Success', 'Login successful!');
+            return true;
+        }
+
+        // Scroll to section
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Show team member
+        function showTeamMember(memberId) {
+            document.querySelectorAll('.team-member-info').forEach(info => {
+                info.style.display = 'none';
+            });
+
+            const detailsSection = document.getElementById('team-details');
+            detailsSection.style.display = 'block';
+
+            const memberInfo = document.getElementById(memberId + '-info');
+            if (memberInfo) {
+                memberInfo.style.display = 'block';
+                memberInfo.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        // Back to top button
+        const backToTop = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(element => {
+            observer.observe(element);
+        });
+
+        // Keyboard navigation for team members
+        document.querySelectorAll('.team-member h3').forEach(header => {
+            header.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    header.click();
+                }
+            });
+        });
+
+        // Close modal on Esc key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
+</body>
+</html>
